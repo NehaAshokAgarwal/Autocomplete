@@ -25,18 +25,12 @@ public class Term implements Comparable<Term> {
 
     // Constructs a term given the associated query string and weight.
     public Term(String query, long weight) {
-        // If the query is null, then throw an NullPointerException saying that
-        // the query is null.
         if (query == null) {
             throw new NullPointerException("query is null");
         } else if (weight < 0) {
-            // If weight is less than 0 (i.e. negative) then throw an
-            // IllegalArgumentException saying Illegal weight.
             throw new IllegalArgumentException("Illegal weight");
         }
-        // Initialise this.query to the given query.
         this.query = query;
-        // Initialise this.weight to the given weight.
         this.weight = weight;
     }
 
@@ -57,8 +51,6 @@ public class Term implements Comparable<Term> {
 
     // Returns a comparator for comparing two terms by their prefixes of length r.
     public static Comparator<Term> byPrefixOrder(int r) {
-        // If the length of the prefix is less than 0(i.e. negative) then throw
-        // an IllegalArgumentException with a messaging saying illegal r.
         if (r < 0) {
             throw new IllegalArgumentException("Illegal r");
         }
@@ -67,7 +59,6 @@ public class Term implements Comparable<Term> {
 
     // Reverse-weight comparator.
     private static class ReverseWeightOrder implements Comparator<Term> {
-        // Returns a comparison of terms v and w by their weights in reverse order.
         public int compare(Term v, Term w) {
             return Long.compare(w.weight, v.weight);
         }
@@ -75,23 +66,14 @@ public class Term implements Comparable<Term> {
 
     // Prefix-order comparator.
     private static class PrefixOrder implements Comparator<Term> {
-        private int r; // Prefix length r
+        private int r; 
 
         // Constructs a new prefix order given the prefix length.
         PrefixOrder(int r) {
-            // Initialise this.r to the given r
             this.r = r;
         }
-
-        // Returns a comparison of terms v and w by their prefixes of length r.
         public int compare(Term v, Term w) {
-            // 'a' is a substring of v of length 0 to r. However, if the length
-            // of v is less than r, then 'a' is the substring of v of length 0 to
-            // v.length()(i.e. its full length).
             String a = v.query.substring(0, Math.min(r, v.query.length()));
-            // 'b' is a substring of w of length 0 to r. However, if the length
-            // w is less than r, then 'a' is the substring of w of length 0 to
-            // w.length()(i.e. its full length).
             String b = w.query.substring(0, Math.min(r, w.query.length()));
             return a.compareTo(b);
         }
