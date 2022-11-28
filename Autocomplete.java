@@ -5,72 +5,53 @@ import stdlib.StdIn;
 import stdlib.StdOut;
 
 public class Autocomplete {
-    private Term[] terms; // Array of terms
-
-    // Constructs an autocomplete data structure from an array of terms.
+    private Term[] terms; 
+    
     public Autocomplete(Term[] terms) {
-        // if terms is null then throw a NullPointerException("terms is null")
         if (terms == null) {
             throw new NullPointerException("terms is null");
         }
-        // Initialise this.terms to a defensive copy of terms.
+        
         this.terms = new Term[terms.length];
         for (int i = 0; i < terms.length; i++) {
             this.terms[i] = terms[i];
         }
-        // sort the array in the lexicographic order of terms.
         Arrays.sort(this.terms);
     }
 
     // Returns all terms that start with prefix, in descending order of their weights.
     public Term[] allMatches(String prefix) {
-        // If prefix is null then throw a NullPointerException("prefix is null")
         if (prefix == null) {
             throw new NullPointerException("prefix is null");
         }
-        // Creating a Term object 'object' with query as prefix and weight as 0.
         Term object = new Term(prefix, 0);
-        // Finding the first index 'i' of the first term in this.terms that start with the given
-        // prefix
         int i = BinarySearchDeluxe.firstIndexOf(this.terms, object,
                 Term.byPrefixOrder(prefix.length()));
-        // n represents the number of terms in this.terms that start with the given prefix.
         int n = numberOfMatches(prefix);
-        // Creating an array matches[] whose size is equals to the n. It stores the n elements from
-        // this.terms that start with index i.(that is all the terms in this.terms that starts with
-        // the given prefix)
         Term[] matches = new Term[n];
         for (int k = 0; k < n; k++) {
             matches[k] = this.terms[i];
             i++;
 
         }
-        // Then, sort the array matches[] by the reverse weight order.
         Arrays.sort(matches, Term.byReverseWeightOrder());
-        // return the array matches[].
         return matches;
     }
 
     // Returns the number of terms that start with prefix.
     public int numberOfMatches(String prefix) {
-        // If prefix is null then throw a NullPointerException("prefix is null")
         if (prefix == null) {
             throw new NullPointerException("prefix is null");
         }
         // Creating a Term object - object with the query as prefix and weight as 0.
         Term object = new Term(prefix, 0);
-        // Finding the index i of the first term in this.terms that start with
-        // the given prefix.
         int i = BinarySearchDeluxe.firstIndexOf(this.terms, object,
                 Term.byPrefixOrder(prefix.length()));
-        // Finding the index j of the last term in this.terms that start with the given prefix.
         int j = BinarySearchDeluxe.lastIndexOf(this.terms, object,
-                Term.byPrefixOrder(prefix.length()));
-        // If there is no term in this.terms that start with the given prefix, then return 0.
+                Term.byPrefixOrder(prefix.length())); 
         if (i == -1 && j == -1) {
             return 0;
         }
-        // else return the number of terms in this.terms that start with the given prefix.
         return j - i + 1;
     }
 
