@@ -1,0 +1,153 @@
+1. Enter the number of hours it took you to complete the project between
+   the <<< and >>> signs below (eg, <<<10>>>).
+   
+   <<< 8 >>>
+   
+2. Enter the difficulty level (1: very easy; 5: very difficult) of the project
+   between the <<< and >>> signs below (eg, <<<3>>>).
+
+   <<< 2 >>>
+
+3. Provide a short description of how you approached each problem, issues you 
+   encountered, and how you resolved those issues.
+
+   Problem 1 (Autocomplete Term)
+       Approach:
+       The purpose of this problem is to create an Object of type Terms
+       which has two attributes - query and weight. In this problem we are implementing API that supports
+       comparing terms by three different orders. First is comparing the terms by the lexicographic
+       order by query(it is the natural order), Second is comparing terms by reverse weight order and third is
+       comparing the terms by the lexicographic order by query but only by comparing the first r characters.
+
+       1) Instance Variables -  String Query and long weight.
+
+       2) Term(String Query) - It is the first constructor in which I initialised this.query to the
+       given query and this.weight to 0. In the constructor, I also handled a corner case that is when
+       the given query is null, then throw a NullPointerException("Query is null").
+
+       3) Term(String query, long weight) - It is the second constructor in which I initialised
+       this.query to the given query and this.weight to the given weight. In this constructor, I
+       handled two corner cases that is when given query is null, then throw a NullPointerException
+       saying that the given query is null. The other corner case is that when the given weight has
+       a negative value, then throw an IllegalArgumentException("Illegal weight").
+
+       4) toString - It is a string representation of this terms.
+       CompareTo(Term other) - It returns a comparison between this term and other by query. For this
+       method I am simply calling CompareTo method (which is defined on the String) on this.query and other.query.
+
+       5) Comparator<Term> byReverseWeightOrder() - It returns a comparator for comparing two terms
+       in reverse order of their weights.
+
+       6) Comparator<Term> byPrefixOrder(int r) - Returns a comparator for comparing two terms by
+       their prefixes of length r. In this function, I am also handling a corner case that is when the given
+       r is negative then throw an illegalArgumentException("illegal r").
+
+       7) private static class ReverseWeightOrder implements Comparator<Term> (A private class)
+         compare(Term v, Term w) - This returns a comparison of terms v and w by their weights in
+         reverse order. In this method, I am calling compare method(which is defined in long) to do
+         the comparison. That is to return the values either 0 (equal), 1(greater) or -1(small).
+         Also, in order to do the comparison in reverse order, I have swapped the order of Term v and w.
+
+       8) private static class PrefixOrder implements Comparator<Term> (A private class)
+          Instance variables - Prefix length r (int).
+          PrefixOrder(int r) - It is a constructor where I initialise this.r to given r.
+           compare(Term v, Term w) - This returns a comparison of terms v and w by their prefixes of
+           length r. For this I am calling compareTo(Which is defined on string) to do the comparison.
+           In this method, I am also handling a corner case that is when the length of Term v and w is
+           less than the given prefix. If that is the situation than  take the whole length of the
+           Term v and w. I am able to do this by calling the min() function.
+
+      Issues and resolution: In this problem I was using an if-else statement in the compare(Term v, Term w)
+      method for comparing the terms in the lexicographic order on the query but only by using first r characters.
+      instead of using the min() function.That is if the length of v or w is less than the
+      given prefix, then take it's whole length. This was pointed out by T.A. Richard, and then I
+      used incorporated the min() function in my code.
+
+   Problem 2 (Binary Search Deluxe)
+       Approach: The purpose of this problem is to search the firstIndexOf and the lastIndexOf the given
+       key in the array. If there is no such index in the array then it returns -1.
+
+       firstIndexOf() - I first handled the corner case that is If the array is null, or key is null,
+       or comparator is null then throw a NullPointerException("a, key, or c is null").
+       A note that the array is sorted.
+      If the neither of them is null, then set the index lo to 0,index hi to the last index of the array and
+      index to -1.
+      As long as index lo and hi have not crossed the path of each other(that the search is not exhausted)
+      set mid to the middle index of the array. Then compare the item at the index mid to the given key.
+      If the comparison comes out to be negative that is the key is smaller than the item at the index mid,
+      then continue the search to the left of the array. Else if the comparison turns out to be positive
+      that is the element at the index mid is greater than the given key, then continue the search to the
+      right of the array. Else if the item at index mid matches with the given key then store the value
+      of the index mid to the variable index and continue the search to the left of the array in order to find
+      the first index in the array whose item matches with the given key.
+
+      If there is no index at which the item matches with the given key then return -1.
+
+       firstIndexOf() - I first handled the corner case that is If the array is null, or key is null,
+       or comparator is null then throw a NullPointerException("a, key, or c is null").
+       A note that the array is sorted.
+       If the neither of them is null, then set the index lo to 0,index hi to the last index of the array amd
+       index to -1.
+       As long as index lo and hi have not crossed the path of each other(that the search is not exhausted)
+       set mid to the middle index of the array. Then compare the item at the index mid to the given key.
+       If the comparison comes out to be negative that is the key is smaller than the item at the index mid,
+       then continue the search to the left of the array. Else if the comparison turns out to be positive
+       that is the element at the index mid is greater than the given key, then continue the search to the
+       right of the array. Else if the item at index mid matches with the given key then store the value
+       of the index mid to the variable index and continue the search to the right of the array in order to find
+       the last index in the array whose item matches with the given key.
+
+       If there is no index at which the item matches with the given key then return -1.
+
+       Issues and resolution: I had no issues with this problem.
+
+   Problem 3 (Autocomplete)
+       Approach: The purpose of the problem is to implement the autocomplete functionality on the
+       given set of strings and weights by using the Term data type and binary search. To implement
+       this, we first sort the array in the lexicographic order of its strings Then, use binary
+       search to find all the terms which starts with given prefix, and then sort those terms again
+       by the reverse order of their weights.
+
+       Instance Variable - Array of terms - Term[] terms.
+
+       Autocomplete(Term[] terms) - Initialise this.terms to a defensive copy of terms. So that
+       the client array is not modified.  Then, Sorted this array to the lexicographic order of query.
+
+       allMatches(String prefix) - First, I searched for the index i of teh first term in this,terms
+       that start with the given prefix by calling the firstIndexOf function from thr BinarySearchDeluxe.java.
+       Then I tried to find the number of terms in this.terms that start with the given prefix by calling
+       the numberOfMatches() method. Then, I constructed the array called matches[] that stores of the terms
+       from this.terms that start with the given prefix. Then I sorted the array in the reverse order of their
+       weight.
+
+       numberOfMatches()- I found the(i)first index of the term that start with the given prefix from the
+       this.terms array. Then I found the last index (j)if the term from thi.terms that start with the
+       given prefix. Then I calculated the number of terms that start with the given prefix by using the indices
+       i and j as j-1+1.  Then I handled a corner case that is when there is no terms that start with the
+       given prefix (so value of i and j is -1), then return 0.
+
+       Issues and resolution: In this problem I was not handling the corner case in the numberOfMatches()
+       method. That is when there is no terms that starts with the prefix(i,e both i and j is 0). It was
+       giving me error on Gradescope. For this, T.A. richard helped me out.
+       The second issue that I had in this was that for-loop in the allMatches was wrong. As I was coding
+       for(int k = i; k < n; k++){
+          matches[k] = this.terms[k];
+       }
+
+       This for loop was wrong because I was not storing my values at index 0 in the matches[].
+       Also, my size of the matches[] was also wrong. This issue was also pointed out by T.A. Richard.
+       Then I made changes in my for-loop.
+   
+4. Did you receive help from anyone? List their names, status (classmate, 
+   CS210 grad, TA, other), and the nature of help received.
+
+   Name               Status       Help Received
+  Swami Iyer         Professor     Location.java
+
+  Richard Anarfi      T.A.        Problem 1 and Problem 3
+
+5. List any other comments here. Feel free to provide any feedback on how
+   much you learned from doing the assignment, and whether you enjoyed
+   doing it.
+
+   It is an interesting project.
